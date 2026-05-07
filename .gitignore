@@ -1,0 +1,34 @@
+# Python / env
+.venv/
+env/
+__pycache__/
+*.pyc
+.env
+venv/
+
+# Local DB / caches
+db/
+*.sqlite
+*.db
+
+# Local models and large binaries (do NOT commit your GGUF)
+llm_model/
+*.gguf
+*.safetensors
+*.bin
+*.pt
+
+# IDE / OS files
+.vscode/
+.idea/
+.DS_Store
+
+# Build artifacts / logs
+*.log
+*.tmp
+
+# Optional: lock files / pip cache
+pip-wheel-metadata/
+
+# Data file
+data/

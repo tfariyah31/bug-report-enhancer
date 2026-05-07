@@ -1,0 +1,11 @@
+# Existing dependencies (unchanged)
+langchain
+langchain-community
+llama-cpp-python
+chromadb
+sentence-transformers
+transformers
+pypdf
+
+groq           
+python-dotenv  
