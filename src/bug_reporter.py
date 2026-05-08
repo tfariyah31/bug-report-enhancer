@@ -1,4 +1,6 @@
 """
+bug_reporter.py
+
 Usage:
     python src/bug_reporter.py "User first name update not working from user profile"
     python src/bug_reporter.py "POST /api/orders returns 500" --type backend
@@ -14,7 +16,6 @@ What it does:
     4. Fills the template including the LLM Enhancement Notes section automatically
     5. Saves bug_report.md to project root
     6. Asks: GitHub / Jira / Both / Skip
-
 """
 
 import sys
@@ -223,7 +224,7 @@ def save_report(report: str, sources: list[dict], bug_description: str) -> Path:
 
 # ── Upload handler ────────────────────────────────────────────────────────────
 
-def handle_upload(title: str, report: str, severity: str):
+def handle_upload(title: str, report: str, severity: str, priority: str = "P2"):
     print("\n" + "─" * 50)
     print("Where would you like to upload this bug report?")
     print("  [1] GitHub Issue only")
@@ -236,7 +237,7 @@ def handle_upload(title: str, report: str, severity: str):
     if choice in ("1", "3"):
         try:
             from github_uploader import create_github_issue
-            url = create_github_issue(title=title, body=report, severity=severity)
+            url = create_github_issue(title=title, body=report, severity=severity, priority=priority)
             if url:
                 print(f"✅ GitHub issue created: {url}")
         except ImportError:
@@ -288,7 +289,7 @@ def main():
     print(f"🔴 Severity : {severity}")
     print(f"🎯 Priority : {priority}")
 
-    handle_upload(title, report, severity)
+    handle_upload(title, report, severity, priority)
 
 
 if __name__ == "__main__":
