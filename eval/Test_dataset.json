@@ -1,0 +1,102 @@
+[
+  {
+    "id": "TC001",
+    "type": "frontend",
+    "bug_description": "Merchant can see Super Admin dashboard link in navigation bar after login",
+    "expected_chunks": ["LOGIN_FEATURES.md"],
+    "expected_severity": "high",
+    "expected_priority": "P1",
+    "expected_component": "Navbar",
+    "ground_truth": "RBAC violation — Merchant role should only access merchant dashboard. Super Admin navigation link must be hidden for Merchant and Customer roles per the role-based access control spec."
+  },
+  {
+    "id": "TC002",
+    "type": "frontend",
+    "bug_description": "No error message shown after account is locked following 3 failed login attempts",
+    "expected_chunks": ["LOGIN_FEATURES.md"],
+    "expected_severity": "high",
+    "expected_priority": "P1",
+    "expected_component": "Login Form",
+    "ground_truth": "After 3 failed login attempts the account should lock for 5 minutes and display a clear lockout message to the user per the security features spec."
+  },
+  {
+    "id": "TC003",
+    "type": "frontend",
+    "bug_description": "Customer can access merchant product management page by navigating directly to the URL",
+    "expected_chunks": ["LOGIN_FEATURES.md"],
+    "expected_severity": "critical",
+    "expected_priority": "P0",
+    "expected_component": "Product Management Page",
+    "ground_truth": "Unauthorized users must be automatically redirected from protected routes per RBAC spec. Customer role must not access Merchant product management pages."
+  },
+  {
+    "id": "TC004",
+    "type": "frontend",
+    "bug_description": "Role badge not displayed in navigation bar after login",
+    "expected_chunks": ["LOGIN_FEATURES.md"],
+    "expected_severity": "low",
+    "expected_priority": "P3",
+    "expected_component": "Navbar",
+    "ground_truth": "The navigation bar must display a role badge for the logged-in user as part of the smart navigation bar UI feature per the Frontend UI spec."
+  },
+  {
+    "id": "TC005",
+    "type": "frontend",
+    "bug_description": "Super Admin cannot see the View User Details button on user management page",
+    "expected_chunks": ["LOGIN_FEATURES.md"],
+    "expected_severity": "medium",
+    "expected_priority": "P2",
+    "expected_component": "User Management Page",
+    "ground_truth": "Super Admin must be able to view user details page per the User Management spec. The View User Details button must be visible and functional for Super Admin role."
+  },
+  {
+    "id": "TC006",
+    "type": "backend",
+    "bug_description": "Login API returns 200 with incorrect password instead of 401",
+    "expected_chunks": ["openapi.json"],
+    "expected_severity": "critical",
+    "expected_priority": "P0",
+    "expected_component": "POST /api/auth/login",
+    "ground_truth": "POST /api/auth/login must return 401 for invalid credentials per the API spec. Returning 200 with wrong password is a critical authentication security failure."
+  },
+  {
+    "id": "TC007",
+    "type": "backend",
+    "bug_description": "Register API returns 500 when email already exists instead of 400",
+    "expected_chunks": ["openapi.json"],
+    "expected_severity": "high",
+    "expected_priority": "P1",
+    "expected_component": "POST /api/auth/register",
+    "ground_truth": "POST /api/auth/register must return 400 when email already exists per the API spec. A 500 response indicates an unhandled server error instead of proper input validation."
+  },
+  {
+    "id": "TC008",
+    "type": "backend",
+    "bug_description": "Refresh token endpoint returns 200 with expired token instead of 403",
+    "expected_chunks": ["openapi.json"],
+    "expected_severity": "high",
+    "expected_priority": "P1",
+    "expected_component": "POST /api/auth/refresh",
+    "ground_truth": "POST /api/auth/refresh must return 403 for invalid or expired refresh tokens per the API spec. Accepting expired tokens is a security vulnerability."
+  },
+  {
+    "id": "TC009",
+    "type": "backend",
+    "bug_description": "Logout endpoint returns 200 without a valid bearer token",
+    "expected_chunks": ["openapi.json"],
+    "expected_severity": "high",
+    "expected_priority": "P1",
+    "expected_component": "POST /api/auth/logout",
+    "ground_truth": "POST /api/auth/logout requires bearer token authentication per the API spec. Returning 200 without a valid token means the auth middleware is not enforcing security correctly."
+  },
+  {
+    "id": "TC010",
+    "type": "frontend",
+    "bug_description": "Merchant dashboard does not show total products count",
+    "expected_chunks": ["LOGIN_FEATURES.md"],
+    "expected_severity": "medium",
+    "expected_priority": "P2",
+    "expected_component": "Merchant Dashboard",
+    "ground_truth": "Merchant dashboard must display total products as part of store insights per the Merchant Features spec. Missing metric breaks the dashboard completeness requirement."
+  }
+]

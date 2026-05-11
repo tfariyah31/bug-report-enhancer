@@ -26,6 +26,7 @@ llm_model/
 # Build artifacts / logs
 *.log
 *.tmp
+logs/*.jsonl
 
 # Optional: lock files / pip cache
 pip-wheel-metadata/

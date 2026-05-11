@@ -1,0 +1,436 @@
+{
+  "timestamp": "2026-05-10T17:33:16",
+  "groq_model": "meta-llama/llama-4-scout-17b-16e-instruct",
+  "summary": {
+    "avg_completeness_pct": 85.2,
+    "severity_accuracy": 70.0,
+    "priority_accuracy": 70.0,
+    "component_accuracy": 100.0,
+    "title_accuracy": 100.0,
+    "overall_score": 0.806
+  },
+  "results": [
+    {
+      "id": "TC001",
+      "bug_description": "Merchant can see Super Admin dashboard link in navigation bar after login",
+      "type": "frontend",
+      "overall_score": 0.946,
+      "checks": {
+        "completeness": {
+          "sections_present": 10,
+          "sections_total": 10,
+          "sections_pct": 100.0,
+          "unfilled_fields": 9,
+          "unfilled_examples": [
+            "- **Browser**: <!-- e.g. Chrome 124, Safari 17, Firefox 125 ",
+            "- **OS**: <!-- e.g. macOS 14, Windows 11, iOS 17 -->",
+            "- **Device**: <!-- e.g. Desktop, iPhone 15, iPad Pro -->"
+          ],
+          "completeness_pct": 82.0,
+          "missing_sections": []
+        },
+        "severity": {
+          "extracted": "high",
+          "expected": "high",
+          "correct": true
+        },
+        "priority": {
+          "extracted": "P1",
+          "expected": "P1",
+          "correct": true
+        },
+        "component": {
+          "found": true,
+          "expected": "Navbar",
+          "match_pct": 100.0
+        },
+        "title": {
+          "has_correct_prefix": true,
+          "has_content": true,
+          "title": "Unauthorized Merchant Sees Super Admin Dashboard Link",
+          "expected_prefix": "[FE]"
+        },
+        "overall_score": 0.946
+      }
+    },
+    {
+      "id": "TC002",
+      "bug_description": "No error message shown after account is locked following 3 failed login attempts",
+      "type": "frontend",
+      "overall_score": 0.946,
+      "checks": {
+        "completeness": {
+          "sections_present": 10,
+          "sections_total": 10,
+          "sections_pct": 100.0,
+          "unfilled_fields": 9,
+          "unfilled_examples": [
+            "- **Browser**: <!-- e.g. Chrome 124, Safari 17, Firefox 125 ",
+            "- **OS**: <!-- e.g. macOS 14, Windows 11, iOS 17 -->",
+            "- **Device**: <!-- e.g. Desktop, iPhone 15, iPad Pro -->"
+          ],
+          "completeness_pct": 82.0,
+          "missing_sections": []
+        },
+        "severity": {
+          "extracted": "high",
+          "expected": "high",
+          "correct": true
+        },
+        "priority": {
+          "extracted": "P1",
+          "expected": "P1",
+          "correct": true
+        },
+        "component": {
+          "found": true,
+          "expected": "Login Form",
+          "match_pct": 50.0
+        },
+        "title": {
+          "has_correct_prefix": true,
+          "has_content": true,
+          "title": "No Error Message After Account Lockout",
+          "expected_prefix": "[FE]"
+        },
+        "overall_score": 0.946
+      }
+    },
+    {
+      "id": "TC003",
+      "bug_description": "Customer can access merchant product management page by navigating directly to the URL",
+      "type": "frontend",
+      "overall_score": 0.446,
+      "checks": {
+        "completeness": {
+          "sections_present": 10,
+          "sections_total": 10,
+          "sections_pct": 100.0,
+          "unfilled_fields": 9,
+          "unfilled_examples": [
+            "- **Browser**: <!-- e.g. Chrome 124, Safari 17, Firefox 125 ",
+            "- **OS**: <!-- e.g. macOS 14, Windows 11, iOS 17 -->",
+            "- **Device**: <!-- e.g. Desktop, iPhone 15, iPad Pro -->"
+          ],
+          "completeness_pct": 82.0,
+          "missing_sections": []
+        },
+        "severity": {
+          "extracted": "high",
+          "expected": "critical",
+          "correct": false
+        },
+        "priority": {
+          "extracted": "P1",
+          "expected": "P0",
+          "correct": false
+        },
+        "component": {
+          "found": true,
+          "expected": "Product Management Page",
+          "match_pct": 100.0
+        },
+        "title": {
+          "has_correct_prefix": true,
+          "has_content": true,
+          "title": "Unauthorized Access to Merchant Product Management Page",
+          "expected_prefix": "[FE]"
+        },
+        "overall_score": 0.446
+      }
+    },
+    {
+      "id": "TC004",
+      "bug_description": "Role badge not displayed in navigation bar after login",
+      "type": "frontend",
+      "overall_score": 0.446,
+      "checks": {
+        "completeness": {
+          "sections_present": 10,
+          "sections_total": 10,
+          "sections_pct": 100.0,
+          "unfilled_fields": 9,
+          "unfilled_examples": [
+            "- **Browser**: <!-- e.g. Chrome 124, Safari 17, Firefox 125 ",
+            "- **OS**: <!-- e.g. macOS 14, Windows 11, iOS 17 -->",
+            "- **Device**: <!-- e.g. Desktop, iPhone 15, iPad Pro -->"
+          ],
+          "completeness_pct": 82.0,
+          "missing_sections": []
+        },
+        "severity": {
+          "extracted": "medium",
+          "expected": "low",
+          "correct": false
+        },
+        "priority": {
+          "extracted": "P2",
+          "expected": "P3",
+          "correct": false
+        },
+        "component": {
+          "found": true,
+          "expected": "Navbar",
+          "match_pct": 100.0
+        },
+        "title": {
+          "has_correct_prefix": true,
+          "has_content": true,
+          "title": "Role Badge Not Displayed in Navigation Bar After Login",
+          "expected_prefix": "[FE]"
+        },
+        "overall_score": 0.446
+      }
+    },
+    {
+      "id": "TC005",
+      "bug_description": "Super Admin cannot see the View User Details button on user management page",
+      "type": "frontend",
+      "overall_score": 0.446,
+      "checks": {
+        "completeness": {
+          "sections_present": 10,
+          "sections_total": 10,
+          "sections_pct": 100.0,
+          "unfilled_fields": 9,
+          "unfilled_examples": [
+            "- **Browser**: <!-- e.g. Chrome 124, Safari 17, Firefox 125 ",
+            "- **OS**: <!-- e.g. macOS 14, Windows 11, iOS 17 -->",
+            "- **Device**: <!-- e.g. Desktop, iPhone 15, iPad Pro -->"
+          ],
+          "completeness_pct": 82.0,
+          "missing_sections": []
+        },
+        "severity": {
+          "extracted": "high",
+          "expected": "medium",
+          "correct": false
+        },
+        "priority": {
+          "extracted": "P1",
+          "expected": "P2",
+          "correct": false
+        },
+        "component": {
+          "found": true,
+          "expected": "User Management Page",
+          "match_pct": 100.0
+        },
+        "title": {
+          "has_correct_prefix": true,
+          "has_content": true,
+          "title": "Super Admin cannot see View User Details button on user management page",
+          "expected_prefix": "[FE]"
+        },
+        "overall_score": 0.446
+      }
+    },
+    {
+      "id": "TC006",
+      "bug_description": "Login API returns 200 with incorrect password instead of 401",
+      "type": "backend",
+      "overall_score": 0.97,
+      "checks": {
+        "completeness": {
+          "sections_present": 9,
+          "sections_total": 10,
+          "sections_pct": 90.0,
+          "unfilled_fields": 0,
+          "unfilled_examples": [],
+          "completeness_pct": 90.0,
+          "missing_sections": [
+            "Actual Behavior"
+          ]
+        },
+        "severity": {
+          "extracted": "critical",
+          "expected": "critical",
+          "correct": true
+        },
+        "priority": {
+          "extracted": "P0",
+          "expected": "P0",
+          "correct": true
+        },
+        "component": {
+          "found": true,
+          "expected": "POST /api/auth/login",
+          "match_pct": 100.0
+        },
+        "title": {
+          "has_correct_prefix": true,
+          "has_content": true,
+          "title": "Incorrect Password Returns 200 Instead of 401",
+          "expected_prefix": "[BE]"
+        },
+        "overall_score": 0.97
+      }
+    },
+    {
+      "id": "TC007",
+      "bug_description": "Register API returns 500 when email already exists instead of 400",
+      "type": "backend",
+      "overall_score": 0.97,
+      "checks": {
+        "completeness": {
+          "sections_present": 9,
+          "sections_total": 10,
+          "sections_pct": 90.0,
+          "unfilled_fields": 0,
+          "unfilled_examples": [],
+          "completeness_pct": 90.0,
+          "missing_sections": [
+            "Actual Behavior"
+          ]
+        },
+        "severity": {
+          "extracted": "high",
+          "expected": "high",
+          "correct": true
+        },
+        "priority": {
+          "extracted": "P1",
+          "expected": "P1",
+          "correct": true
+        },
+        "component": {
+          "found": true,
+          "expected": "POST /api/auth/register",
+          "match_pct": 100.0
+        },
+        "title": {
+          "has_correct_prefix": true,
+          "has_content": true,
+          "title": "Register API Returns 500 Instead of 400 for Existing Email",
+          "expected_prefix": "[BE]"
+        },
+        "overall_score": 0.97
+      }
+    },
+    {
+      "id": "TC008",
+      "bug_description": "Refresh token endpoint returns 200 with expired token instead of 403",
+      "type": "backend",
+      "overall_score": 0.97,
+      "checks": {
+        "completeness": {
+          "sections_present": 9,
+          "sections_total": 10,
+          "sections_pct": 90.0,
+          "unfilled_fields": 0,
+          "unfilled_examples": [],
+          "completeness_pct": 90.0,
+          "missing_sections": [
+            "Actual Behavior"
+          ]
+        },
+        "severity": {
+          "extracted": "high",
+          "expected": "high",
+          "correct": true
+        },
+        "priority": {
+          "extracted": "P1",
+          "expected": "P1",
+          "correct": true
+        },
+        "component": {
+          "found": true,
+          "expected": "POST /api/auth/refresh",
+          "match_pct": 100.0
+        },
+        "title": {
+          "has_correct_prefix": true,
+          "has_content": true,
+          "title": "Refresh Token Endpoint Returns 200 with Expired Token",
+          "expected_prefix": "[BE]"
+        },
+        "overall_score": 0.97
+      }
+    },
+    {
+      "id": "TC009",
+      "bug_description": "Logout endpoint returns 200 without a valid bearer token",
+      "type": "backend",
+      "overall_score": 0.97,
+      "checks": {
+        "completeness": {
+          "sections_present": 9,
+          "sections_total": 10,
+          "sections_pct": 90.0,
+          "unfilled_fields": 0,
+          "unfilled_examples": [],
+          "completeness_pct": 90.0,
+          "missing_sections": [
+            "Actual Behavior"
+          ]
+        },
+        "severity": {
+          "extracted": "high",
+          "expected": "high",
+          "correct": true
+        },
+        "priority": {
+          "extracted": "P1",
+          "expected": "P1",
+          "correct": true
+        },
+        "component": {
+          "found": true,
+          "expected": "POST /api/auth/logout",
+          "match_pct": 100.0
+        },
+        "title": {
+          "has_correct_prefix": true,
+          "has_content": true,
+          "title": "Logout endpoint returns 200 without valid bearer token",
+          "expected_prefix": "[BE]"
+        },
+        "overall_score": 0.97
+      }
+    },
+    {
+      "id": "TC010",
+      "bug_description": "Merchant dashboard does not show total products count",
+      "type": "frontend",
+      "overall_score": 0.946,
+      "checks": {
+        "completeness": {
+          "sections_present": 10,
+          "sections_total": 10,
+          "sections_pct": 100.0,
+          "unfilled_fields": 9,
+          "unfilled_examples": [
+            "- **Browser**: <!-- e.g. Chrome 124, Safari 17, Firefox 125 ",
+            "- **OS**: <!-- e.g. macOS 14, Windows 11, iOS 17 -->",
+            "- **Device**: <!-- e.g. Desktop, iPhone 15, iPad Pro -->"
+          ],
+          "completeness_pct": 82.0,
+          "missing_sections": []
+        },
+        "severity": {
+          "extracted": "medium",
+          "expected": "medium",
+          "correct": true
+        },
+        "priority": {
+          "extracted": "P2",
+          "expected": "P2",
+          "correct": true
+        },
+        "component": {
+          "found": true,
+          "expected": "Merchant Dashboard",
+          "match_pct": 100.0
+        },
+        "title": {
+          "has_correct_prefix": true,
+          "has_content": true,
+          "title": "Merchant Dashboard Total Products Count Not Displayed",
+          "expected_prefix": "[FE]"
+        },
+        "overall_score": 0.946
+      }
+    }
+  ]
+}

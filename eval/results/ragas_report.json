@@ -1,0 +1,73 @@
+{
+  "timestamp": "2026-05-10T01:34:33",
+  "eval_provider": "openai",
+  "groq_model": "meta-llama/llama-4-scout-17b-16e-instruct",
+  "embed_model": "all-MiniLM-L6-v2",
+  "averages": {
+    "faithfulness": 0.359,
+    "answer_relevancy": 0.745,
+    "overall": 0.552
+  },
+  "per_case": [
+    {
+      "id": "TC001",
+      "bug_description": "Merchant can see Super Admin dashboard link in navigation bar after login",
+      "faithfulness": 0.389,
+      "answer_relevancy": 0.692
+    },
+    {
+      "id": "TC002",
+      "bug_description": "No error message shown after account is locked following 3 failed login attempts",
+      "faithfulness": 0.533,
+      "answer_relevancy": 0.774
+    },
+    {
+      "id": "TC003",
+      "bug_description": "Customer can access merchant product management page by navigating directly to the URL",
+      "faithfulness": 0.5,
+      "answer_relevancy": 0.675
+    },
+    {
+      "id": "TC004",
+      "bug_description": "Role badge not displayed in navigation bar after login",
+      "faithfulness": 0.348,
+      "answer_relevancy": 0.932
+    },
+    {
+      "id": "TC005",
+      "bug_description": "Super Admin cannot see the View User Details button on user management page",
+      "faithfulness": 0.286,
+      "answer_relevancy": 0.789
+    },
+    {
+      "id": "TC006",
+      "bug_description": "Login API returns 200 with incorrect password instead of 401",
+      "faithfulness": 0.308,
+      "answer_relevancy": 0.681
+    },
+    {
+      "id": "TC007",
+      "bug_description": "Register API returns 500 when email already exists instead of 400",
+      "faithfulness": 0.333,
+      "answer_relevancy": 0.764
+    },
+    {
+      "id": "TC008",
+      "bug_description": "Refresh token endpoint returns 200 with expired token instead of 403",
+      "faithfulness": 0.231,
+      "answer_relevancy": 0.732
+    },
+    {
+      "id": "TC009",
+      "bug_description": "Logout endpoint returns 200 without a valid bearer token",
+      "faithfulness": 0.438,
+      "answer_relevancy": 0.694
+    },
+    {
+      "id": "TC010",
+      "bug_description": "Merchant dashboard does not show total products count",
+      "faithfulness": 0.222,
+      "answer_relevancy": 0.718
+    }
+  ]
+}

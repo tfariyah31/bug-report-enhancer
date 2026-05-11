@@ -1,0 +1,10 @@
+{
+  "active_version": "v1",
+  "versions": {
+    "v1": {
+      "frontend": "prompts/v1_frontend_bug.txt",
+      "backend":  "prompts/v1_backend_bug.txt",
+      "notes":    "Initial prompt — baseline version"
+    }
+  }
+}

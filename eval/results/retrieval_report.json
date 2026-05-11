@@ -1,0 +1,266 @@
+{
+  "timestamp": "2026-05-08T20:06:00",
+  "embed_model": "all-MiniLM-L6-v2",
+  "top_k": 6,
+  "summary": {
+    "total": 10,
+    "passed": 10,
+    "failed": 0,
+    "precision_pct": 100.0,
+    "avg_top_score": 1.0725,
+    "confidence_counts": {
+      "HIGH": 6,
+      "MEDIUM": 3,
+      "LOW": 1
+    },
+    "frontend": {
+      "total": 6,
+      "passed": 6,
+      "pct": 100.0
+    },
+    "backend": {
+      "total": 4,
+      "passed": 4,
+      "pct": 100.0
+    }
+  },
+  "results": [
+    {
+      "id": "TC001",
+      "type": "frontend",
+      "bug_description": "Merchant can see Super Admin dashboard link in navigation bar after login",
+      "expected_chunks": [
+        "LOGIN_FEATURES.md"
+      ],
+      "retrieved_files": [
+        "LOGIN_FEATURES.md",
+        "openapi.json"
+      ],
+      "top_score": 0.8536,
+      "all_scores": [
+        0.8536,
+        0.907,
+        1.4245,
+        1.4831,
+        1.5968,
+        1.6213
+      ],
+      "found": true,
+      "missing": [],
+      "confidence": "HIGH"
+    },
+    {
+      "id": "TC002",
+      "type": "frontend",
+      "bug_description": "No error message shown after account is locked following 3 failed login attempts",
+      "expected_chunks": [
+        "LOGIN_FEATURES.md"
+      ],
+      "retrieved_files": [
+        "LOGIN_FEATURES.md",
+        "openapi.json"
+      ],
+      "top_score": 1.3821,
+      "all_scores": [
+        1.3821,
+        1.5068,
+        1.5128,
+        1.5155,
+        1.5162,
+        1.5903
+      ],
+      "found": true,
+      "missing": [],
+      "confidence": "MEDIUM"
+    },
+    {
+      "id": "TC003",
+      "type": "frontend",
+      "bug_description": "Customer can access merchant product management page by navigating directly to the URL",
+      "expected_chunks": [
+        "LOGIN_FEATURES.md"
+      ],
+      "retrieved_files": [
+        "LOGIN_FEATURES.md"
+      ],
+      "top_score": 0.9161,
+      "all_scores": [
+        0.9161,
+        1.0296,
+        1.2437,
+        1.3183,
+        1.6687,
+        1.7643
+      ],
+      "found": true,
+      "missing": [],
+      "confidence": "HIGH"
+    },
+    {
+      "id": "TC004",
+      "type": "frontend",
+      "bug_description": "Role badge not displayed in navigation bar after login",
+      "expected_chunks": [
+        "LOGIN_FEATURES.md"
+      ],
+      "retrieved_files": [
+        "LOGIN_FEATURES.md",
+        "openapi.json"
+      ],
+      "top_score": 1.4833,
+      "all_scores": [
+        1.4833,
+        1.53,
+        1.5381,
+        1.5984,
+        1.6017,
+        1.621
+      ],
+      "found": true,
+      "missing": [],
+      "confidence": "LOW"
+    },
+    {
+      "id": "TC005",
+      "type": "frontend",
+      "bug_description": "Super Admin cannot see the View User Details button on user management page",
+      "expected_chunks": [
+        "LOGIN_FEATURES.md"
+      ],
+      "retrieved_files": [
+        "LOGIN_FEATURES.md",
+        "openapi.json"
+      ],
+      "top_score": 1.1566,
+      "all_scores": [
+        1.1566,
+        1.3401,
+        1.6238,
+        1.6797,
+        1.6871,
+        1.7946
+      ],
+      "found": true,
+      "missing": [],
+      "confidence": "MEDIUM"
+    },
+    {
+      "id": "TC006",
+      "type": "backend",
+      "bug_description": "Login API returns 200 with incorrect password instead of 401",
+      "expected_chunks": [
+        "openapi.json"
+      ],
+      "retrieved_files": [
+        "openapi.json"
+      ],
+      "top_score": 0.9829,
+      "all_scores": [
+        0.9829,
+        1.1077,
+        1.1812,
+        1.2584,
+        1.3011,
+        1.3041
+      ],
+      "found": true,
+      "missing": [],
+      "confidence": "HIGH"
+    },
+    {
+      "id": "TC007",
+      "type": "backend",
+      "bug_description": "Register API returns 500 when email already exists instead of 400",
+      "expected_chunks": [
+        "openapi.json"
+      ],
+      "retrieved_files": [
+        "openapi.json"
+      ],
+      "top_score": 1.1669,
+      "all_scores": [
+        1.1669,
+        1.337,
+        1.4169,
+        1.4762,
+        1.4932,
+        1.5446
+      ],
+      "found": true,
+      "missing": [],
+      "confidence": "MEDIUM"
+    },
+    {
+      "id": "TC008",
+      "type": "backend",
+      "bug_description": "Refresh token endpoint returns 200 with expired token instead of 403",
+      "expected_chunks": [
+        "openapi.json"
+      ],
+      "retrieved_files": [
+        "openapi.json",
+        "LOGIN_FEATURES.md"
+      ],
+      "top_score": 0.9248,
+      "all_scores": [
+        0.9248,
+        0.9701,
+        1.243,
+        1.3216,
+        1.3546,
+        1.3624
+      ],
+      "found": true,
+      "missing": [],
+      "confidence": "HIGH"
+    },
+    {
+      "id": "TC009",
+      "type": "backend",
+      "bug_description": "Logout endpoint returns 200 without a valid bearer token",
+      "expected_chunks": [
+        "openapi.json"
+      ],
+      "retrieved_files": [
+        "openapi.json",
+        "LOGIN_FEATURES.md"
+      ],
+      "top_score": 0.9548,
+      "all_scores": [
+        0.9548,
+        1.2818,
+        1.3639,
+        1.3654,
+        1.3669,
+        1.454
+      ],
+      "found": true,
+      "missing": [],
+      "confidence": "HIGH"
+    },
+    {
+      "id": "TC010",
+      "type": "frontend",
+      "bug_description": "Merchant dashboard does not show total products count",
+      "expected_chunks": [
+        "LOGIN_FEATURES.md"
+      ],
+      "retrieved_files": [
+        "LOGIN_FEATURES.md",
+        "openapi.json"
+      ],
+      "top_score": 0.9036,
+      "all_scores": [
+        0.9036,
+        1.4413,
+        1.4433,
+        1.607,
+        1.7137,
+        1.8019
+      ],
+      "found": true,
+      "missing": [],
+      "confidence": "HIGH"
+    }
+  ]
+}
