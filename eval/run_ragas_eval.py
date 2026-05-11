@@ -1,9 +1,9 @@
 """
 Evaluates bug report quality using RAGAS 0.4 metrics.
-Supports multiple LLM providers — switch via .env
+Supports multiple LLM providers — switch via .env, no code changes needed.
 
 Provider setup in .env:
-    RAGAS_EVAL_PROVIDER=gemini    # or: groq, openai
+    RAGAS_EVAL_PROVIDER=openai    # or: groq, gemini
 
 Usage:
     python eval/run_ragas_eval.py
@@ -34,81 +34,52 @@ import asyncio
 
 # ── Config ────────────────────────────────────────────────────────────────────
 
-DB_DIR        = Path("db")
-DATASET_PATH  = Path("eval") / "test_dataset.json"
-RESULTS_PATH  = Path("eval") / "results" / "ragas_report.json"
-EMBED_MODEL   = "all-MiniLM-L6-v2"
-TOP_K         = 6
-
-# Generation always uses Groq (fast, cheap)
-GROQ_GEN_MODEL = "meta-llama/llama-4-scout-17b-16e-instruct"
-GENERATION_DELAY = 4.0   # seconds between generation calls
-
-# Evaluation provider — controlled via .env
-EVAL_PROVIDER  = os.getenv("RAGAS_EVAL_PROVIDER", "gemini").lower()
-EVAL_DELAY     = 2.0    # seconds between evaluation calls
+DB_DIR           = Path("db")
+DATASET_PATH     = Path("eval") / "test_dataset.json"
+RESULTS_PATH     = Path("eval") / "results" / "ragas_report.json"
+EMBED_MODEL      = "all-MiniLM-L6-v2"
+TOP_K            = 6
+GROQ_GEN_MODEL   = "meta-llama/llama-4-scout-17b-16e-instruct"
+GENERATION_DELAY = 4.0
+EVAL_PROVIDER    = os.getenv("RAGAS_EVAL_PROVIDER", "openai").lower()
+EVAL_DELAY       = 3.0
 
 
 # ── Provider factory ──────────────────────────────────────────────────────────
 
 def get_evaluator_llm():
-    """
-    Returns a RAGAS-compatible LLM based on RAGAS_EVAL_PROVIDER in .env.
-
-    To switch providers, change RAGAS_EVAL_PROVIDER in .env:
-        groq    → uses GROQ_API_KEY + GROQ_EVAL_MODEL
-        gemini  → uses GEMINI_API_KEY + GEMINI_EVAL_MODEL
-        openai  → uses OPENAI_API_KEY + OPENAI_EVAL_MODEL
-    """
     print(f"🔌 Eval provider     : {EVAL_PROVIDER.upper()}")
 
     if EVAL_PROVIDER == "groq":
         from openai import AsyncOpenAI
         from ragas.llms import llm_factory
-
         api_key = os.getenv("GROQ_API_KEY")
         model   = os.getenv("GROQ_EVAL_MODEL", "meta-llama/llama-4-scout-17b-16e-instruct")
         if not api_key:
             raise EnvironmentError("GROQ_API_KEY not set in .env")
-
-        client = AsyncOpenAI(
-            api_key=api_key,
-            base_url="https://api.groq.com/openai/v1",
-        )
+        client = AsyncOpenAI(api_key=api_key, base_url="https://api.groq.com/openai/v1")
         print(f"   Model             : {model}")
         return llm_factory(model, provider="openai", client=client)
 
     elif EVAL_PROVIDER == "gemini":
         from langchain_google_genai import ChatGoogleGenerativeAI
         from ragas.llms import LangchainLLMWrapper
-
         api_key = os.getenv("GEMINI_API_KEY")
-        model   = os.getenv("GEMINI_EVAL_MODEL", "gemini-2.0-flash")
+        model   = os.getenv("GEMINI_EVAL_MODEL", "gemini-2.5-flash")
         if not api_key:
             raise EnvironmentError("GEMINI_API_KEY not set in .env")
-
-        llm = ChatGoogleGenerativeAI(
-            model=model,
-            google_api_key=api_key,
-            temperature=0.1,
-        )
+        llm = ChatGoogleGenerativeAI(model=model, google_api_key=api_key, temperature=0.1)
         print(f"   Model             : {model}")
         return LangchainLLMWrapper(llm)
 
     elif EVAL_PROVIDER == "openai":
         from langchain_openai import ChatOpenAI
         from ragas.llms import LangchainLLMWrapper
-
         api_key = os.getenv("OPENAI_API_KEY")
         model   = os.getenv("OPENAI_EVAL_MODEL", "gpt-4o-mini")
         if not api_key:
             raise EnvironmentError("OPENAI_API_KEY not set in .env")
-
-        llm = ChatOpenAI(
-            model=model,
-            api_key=api_key,
-            temperature=0.1,
-        )
+        llm = ChatOpenAI(model=model, api_key=api_key, temperature=0.1)
         print(f"   Model             : {model}")
         return LangchainLLMWrapper(llm)
 
@@ -122,10 +93,7 @@ def get_evaluator_llm():
 # ── Local embeddings ──────────────────────────────────────────────────────────
 
 class LocalEmbeddings(BaseRagasEmbeddings):
-    """
-    Local sentence-transformers — no API calls, no rate limits.
-    Used for AnswerRelevancy metric.
-    """
+    """Local sentence-transformers — no API calls, no rate limits."""
     def __init__(self, model_name: str = "all-MiniLM-L6-v2"):
         self.model = SentenceTransformer(model_name)
 
@@ -159,7 +127,6 @@ def generate_report(bug_description: str, context: list[str]) -> str:
     """Always uses Groq for generation — fast and cheap."""
     groq_client = Groq(api_key=os.getenv("GROQ_API_KEY"))
     context_str = "\n\n---\n\n".join(context)
-
     prompt = f"""You are a QA engineer. Using ONLY the context below, \
 write a detailed bug report.
 
@@ -207,14 +174,13 @@ def build_samples(dataset: list[dict], db: Chroma) -> list[SingleTurnSample]:
     return samples
 
 
-# ── Manual scoring (one at a time — no parallel timeouts) ────────────────────
+# ── Manual scoring ────────────────────────────────────────────────────────────
 
 async def score_one(
     sample: SingleTurnSample,
     metric,
     evaluator_embeddings,
 ) -> float | None:
-    """Score a single sample on a single metric."""
     try:
         if hasattr(metric, "embeddings"):
             metric.embeddings = evaluator_embeddings
@@ -231,16 +197,13 @@ def run_evaluation(
     evaluator_llm,
     evaluator_embeddings,
 ) -> list[dict]:
-    """
-    Score each sample individually, one metric at a time.
-    No parallel jobs = no timeouts regardless of provider speed.
-    """
+    """Score each sample individually — no parallel jobs, no timeouts."""
     metrics = [
         Faithfulness(),
         AnswerRelevancy(embeddings=evaluator_embeddings),
+        ContextPrecision(),
     ]
 
-    # Inject evaluator LLM into each metric
     for metric in metrics:
         metric.llm = evaluator_llm
 
@@ -265,12 +228,13 @@ def run_evaluation(
             if call_count < total_calls:
                 time.sleep(EVAL_DELAY)
 
+        # All 3 metrics saved consistently
         results.append({
             "id":                tc_id,
             "bug_description":   dataset[i].get("bug_description", ""),
             "faithfulness":      scores.get("faithfulness"),
             "answer_relevancy":  scores.get("answer_relevancy"),
-            
+            "context_precision": scores.get("context_precision"),
         })
 
     return results
@@ -279,17 +243,17 @@ def run_evaluation(
 # ── Print + save ──────────────────────────────────────────────────────────────
 
 def print_and_save(results: list[dict]) -> dict:
-    print("\n" + "═" * 65)
-    print(f"{'RAGAS EVALUATION RESULTS':^65}")
-    print("─" * 65)
+    print("\n" + "═" * 70)
+    print(f"{'RAGAS EVALUATION RESULTS':^70}")
+    print("─" * 70)
 
     for r in results:
         def fmt(v):
             return f"{v:.3f}" if v is not None else " nan "
         print(f"  {r['id']}  "
               f"faith:{fmt(r['faithfulness'])}  "
-              f"relevancy:{fmt(r['answer_relevancy'])}  ")
-              
+              f"relevancy:{fmt(r['answer_relevancy'])}  "
+              f"precision:{fmt(r['context_precision'])}")
 
     def safe_mean(key):
         vals = [r[key] for r in results if r[key] is not None]
@@ -297,30 +261,33 @@ def print_and_save(results: list[dict]) -> dict:
 
     faith_avg = safe_mean("faithfulness")
     relev_avg = safe_mean("answer_relevancy")
-    valid     = [v for v in [faith_avg, relev_avg] if v is not None]
+    prec_avg  = safe_mean("context_precision")
+    valid     = [v for v in [faith_avg, relev_avg, prec_avg] if v is not None]
     overall   = round(sum(valid) / len(valid), 3) if valid else None
 
-    print("─" * 65)
+    print("─" * 70)
     print(f"  AVERAGES")
     print(f"    Faithfulness       : {faith_avg}")
     print(f"    Answer Relevancy   : {relev_avg}")
+    print(f"    Context Precision  : {prec_avg}")
     print(f"    Overall Score      : {overall}")
-    print("═" * 65)
+    print("═" * 70)
 
     averages = {
         "faithfulness":      faith_avg,
         "answer_relevancy":  relev_avg,
+        "context_precision": prec_avg,
         "overall":           overall,
     }
 
     RESULTS_PATH.parent.mkdir(parents=True, exist_ok=True)
     output = {
-        "timestamp":    datetime.now().strftime("%Y-%m-%dT%H:%M:%S"),
+        "timestamp":     datetime.now().strftime("%Y-%m-%dT%H:%M:%S"),
         "eval_provider": EVAL_PROVIDER,
-        "groq_model":   GROQ_GEN_MODEL,
-        "embed_model":  EMBED_MODEL,
-        "averages":     averages,
-        "per_case":     results,
+        "groq_model":    GROQ_GEN_MODEL,
+        "embed_model":   EMBED_MODEL,
+        "averages":      averages,
+        "per_case":      results,
     }
     RESULTS_PATH.write_text(json.dumps(output, indent=2))
     print(f"\n  Results saved → {RESULTS_PATH}")
@@ -337,9 +304,9 @@ def main():
 
     dataset = json.loads(DATASET_PATH.read_text())
 
-    print("=" * 65)
-    print(f"{'BUG REPORT ENHANCER — RAGAS EVALUATION':^65}")
-    print("=" * 65)
+    print("=" * 70)
+    print(f"{'BUG REPORT ENHANCER — RAGAS EVALUATION':^70}")
+    print("=" * 70)
     print(f"📋 Test cases        : {len(dataset)}")
 
     evaluator_llm        = get_evaluator_llm()
