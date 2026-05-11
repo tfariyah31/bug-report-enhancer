@@ -8,19 +8,11 @@ Rules:
      Suggested Fix Direction, Regression Risk, Severity, Priority
 2. For fields you cannot determine (e.g. exact browser version, specific user ID,
    screenshot links), keep the HTML comment placeholder as-is — do NOT invent values.
-3. Severity inference — follow these rules strictly:
-   Critical = authentication broken, data loss, security vulnerability,
-              unauthorized access to protected routes (e.g. Customer
-              accessing Merchant pages)
-   High     = named feature completely broken but app still loads
-              (e.g. lockout message missing, dashboard link visible
-              to wrong role)
-   Medium   = feature partially works, affects subset of users
-              (e.g. missing UI element, incorrect count displayed)
-   Low      = cosmetic only, no functional impact
-              (e.g. badge not displayed, label missing)
-4. Priority maps directly from severity:
-   Critical → P0, High → P1, Medium → P2, Low → P3
-   Never assign P1 to a Medium severity bug.
+3. Severity inference:
+   Critical = core feature completely broken for all users
+   High     = major feature broken, workaround exists
+   Medium   = partial issue, most users unaffected
+   Low      = cosmetic or minor inconvenience
+4. Priority: P0=Critical, P1=High, P2=Medium, P3=Low
 5. Keep the EXACT markdown structure and headings. Do not add or remove sections.
 6. Return ONLY the filled template — no preamble, no explanation.

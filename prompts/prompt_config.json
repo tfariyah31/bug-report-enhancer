@@ -1,10 +1,15 @@
 {
-  "active_version": "v1",
+  "active_version": "v2",
   "versions": {
     "v1": {
       "frontend": "prompts/v1_frontend_bug.txt",
       "backend":  "prompts/v1_backend_bug.txt",
-      "notes":    "Initial prompt — baseline version"
+      "notes":    "Baseline prompt — generic severity rules"
+    },
+    "v2": {
+      "frontend": "prompts/v2_frontend_bug.txt",
+      "backend":  "prompts/v2_backend_bug.txt",
+      "notes":    "Improved severity inference — explicit Critical/High/Medium/Low examples"
     }
   }
 }
