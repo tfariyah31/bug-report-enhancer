@@ -1,6 +1,7 @@
-# Bug Report Enhancer
+AI-powered bug reporting · RAG · RAGAS Evaluation · GitHub · Jira 
 
-An AI-powered bug report automation tool that generates structured, context-aware bug reports from plain English descriptions and uploads them directly to **GitHub Issues** or **Jira** — fully free, runs locally.
+# Bug Report Enhancer
+An AI-powered bug report automation tool that generates structured, context-aware bug reports from plain English descriptions and uploads them directly to GitHub Issues and Jira. Includes a full evaluation suite measuring RAG retrieval accuracy, LLM output quality (RAGAS), and template generation quality.
 
 ---
 
@@ -30,11 +31,15 @@ Choose where to upload:
 - **RAG (Retrieval-Augmented Generation)** — only relevant context is sent to the LLM, not your entire codebase
 - Auto-fills **LLM Enhancement Notes**: Root Cause Hypothesis, Likely Affected Files, Suggested Fix, Regression Risk
 - Auto-infers **Severity** (Critical / High / Medium / Low) and **Priority** (P0–P3)
+- **RAG Confidence Scoring** — flags LOW/MEDIUM/HIGH confidence before upload
+- **Quality Gate** — checks template completeness, severity, priority, and title before uploading
+- **Retrieval Logging** — every run logged to `logs/retrieval_log.jsonl` with prompt version, confidence, and model
+- **Prompt Versioning** — system prompts stored as versioned files, switch without code changes
+- **Full Evaluation Suite** — RAG retrieval accuracy, RAGAS LLM quality, and template generation scoring
 - Creates GitHub labels automatically if they don't exist
 - Converts markdown to **Atlassian Document Format (ADF)** for Jira
 - Runs **fully offline** except for Groq API and upload calls
-- **100% free** — uses Groq free tier (1,000 req/day)
-
+- **100% free** for bug generation — uses Groq free tier (1,000 req/day)
 ---
 
 ## Tech Stack
@@ -44,11 +49,137 @@ Choose where to upload:
 | Embeddings + Retrieval | LangChain + `all-MiniLM-L6-v2` |
 | Vector Store | Chroma (local) |
 | LLM Generation | Groq API — Llama 4 Scout (free tier) |
+| RAG Evaluation | RAGAS 0.4 |
+| Eval LLM | OpenAI `gpt-4o-mini` / Groq / Gemini (switchable via `.env`) |
 | GitHub Integration | GitHub REST API v3 |
 | Jira Integration | Jira Cloud REST API v3 |
-| Local Q&A (optional) | Mistral-7B via llama.cpp |
+| Local Q&A (optional) | Mistral-7B via llama.cpp + Ollama |
+---
+
+## Evaluation
+
+This project includes a full evaluation suite measuring quality at three levels.
+Run any eval script after changing models, prompts, or chunk sizes to track improvement.
 
 ---
+
+### Phase 1 — RAG Retrieval Accuracy
+
+Measures whether Chroma retrieved the correct files for each bug description.
+
+```bash
+python eval/run_retrieval_eval.py
+```
+
+| Metric | Score |
+|---|---|
+| Precision@6 | 100% |
+| Frontend accuracy | 6 / 6 |
+| Backend accuracy | 4 / 4 |
+| Avg similarity score | 1.07 *(lower = better)* |
+| HIGH confidence | 6 / 10 |
+| MEDIUM confidence | 3 / 10 |
+| LOW confidence | 1 / 10 |
+
+> TC004 ("Role badge not displayed") scored LOW confidence (1.48) — 
+> the description is vague and barely appears in the feature file. 
+> This is expected behaviour — the confidence scorer correctly flags it.
+
+---
+
+### Phase 2 — RAGAS LLM Output Quality
+
+Measures whether generated reports are faithful to retrieved context
+and relevant to the bug description.
+
+```bash
+python eval/run_ragas_eval.py
+```
+
+| Metric | Score |
+|---|---|
+| Faithfulness | 0.359 |
+| Answer Relevancy | 0.745 |
+| Overall | 0.552 |
+
+> **Note on Faithfulness (0.359):** RAGAS penalises any statement not
+> word-for-word in the retrieved chunks. Since chunks are 500 tokens,
+> the LLM makes reasonable inferences beyond literal retrieval — which
+> RAGAS counts against faithfulness. Increasing `chunk_size` from 500
+> to 1000 in `build_index.py` and re-indexing is expected to improve
+> this score significantly.
+
+
+---
+
+### Phase 3 — Bug Report Generation Quality
+
+Measures whether the LLM fills the template correctly — right severity,
+priority, component, and structure. Rule-based, no API calls needed.
+
+```bash
+python eval/run_report_eval.py
+```
+
+| Metric | v1 | v2 |
+|---|---|---|
+| Template Completeness | 84.6% | 85.2% |
+| Severity Accuracy | 5 / 10 (50%) | 7 / 10 (70%) |
+| Priority Accuracy | 5 / 10 (50%) | 7 / 10 (70%) |
+| Component Accuracy | 9 / 10 (90%) | 10 / 10 (100%) |
+| Title Quality | 10 / 10 (100%) | 10 / 10 (100%) |
+| Overall Score | 0.689 / 1.000 | 0.806 / 1.000 |
+
+### Prompt Version History
+
+| Version | Overall Score | Severity Accuracy | Change |
+|---|---|---|---|
+| v1 | 0.689 | 50% | Baseline |
+| v2 | 0.806 | 70% | Added explicit severity/priority examples — +17 points overall |
+
+> **Prompt versioning:** Prompts are stored as versioned files in `prompts/`.
+> Switch versions by updating `active_version` in `prompts/prompt_config.json`
+> — no code changes needed. Each run logs which prompt version was used
+> in `logs/retrieval_log.jsonl` for full traceability.
+
+> **Remaining failures (TC003, TC005):** Both involve RBAC violations
+> where the LLM rates severity as High instead of Critical. Further
+> prompt refinement tracked for v3.
+---
+
+### Eval Provider Switching
+
+Switch evaluation LLM with one line in `.env` — no code changes:
+
+```bash
+# Current
+RAGAS_EVAL_PROVIDER=openai
+OPENAI_EVAL_MODEL=gpt-4o-mini
+
+# Switch to Groq (when Dev tier available)
+RAGAS_EVAL_PROVIDER=groq
+GROQ_EVAL_MODEL=meta-llama/llama-4-scout-17b-16e-instruct
+
+# Switch to Gemini
+RAGAS_EVAL_PROVIDER=gemini
+GEMINI_EVAL_MODEL=gemini-2.5-flash
+```
+
+---
+
+### Running All Evals
+
+```bash
+# Run all three in sequence
+python eval/run_retrieval_eval.py
+python eval/run_ragas_eval.py
+python eval/run_report_eval.py
+
+# Results saved to
+eval/results/retrieval_report.json
+eval/results/ragas_report.json
+eval/results/report_eval_report.json
+```
 
 ## Project Structure
 
@@ -63,6 +194,12 @@ bug-report-enhancer/
 ├── data/                       # Your knowledge files (indexed by RAG)
 │   ├── LOGIN_FEATURES.md       # Feature specs
 │   └── openapi.json            # API documentation
+├── eval/
+│   ├── test_dataset.json        # 10 ground truth test cases
+│   ├── run_retrieval_eval.py    # Phase 1 — RAG file retrieval accuracy
+│   ├── run_ragas_eval.py        # Phase 2 — LLM output quality (RAGAS metrics)
+│   └── run_report_eval.py       # Phase 3 — Bug report template quality
+│
 ├── db/                         # Chroma vector store (auto-generated)
 ├── llm_model/
 │   └── mistral/                # Mistral GGUF model (for rag_chat.py)
@@ -228,16 +365,6 @@ python src/build_index.py
 
 ---
 
-## Groq Free Tier Limits
-
-| Model | Tokens/min | Requests/day |
-|---|---|---|
-| Llama 4 Scout | 30,000 | 1,000 |
-
-Each bug report uses ~1,500–2,500 tokens after RAG retrieval — effectively **400+ bug reports/day for free**.
-
----
-
 ## .gitignore
 
 Make sure your `.gitignore` includes:
@@ -267,31 +394,3 @@ Download from [HuggingFace — TheBloke/Mistral-7B-Instruct-GGUF](https://huggin
 
 ---
 
-## Troubleshooting
-
-**`torch` install fails**
-→ Make sure you're using Python 3.11. Python 3.12+ has no torch wheels yet.
-```bash
-python --version   # must be 3.11.x
-```
-
-**`No module named 'langchain.text_splitter'`**
-→ Install the updated package:
-```bash
-pip install langchain-text-splitters
-```
-
-**`No module named 'langchain.schema'`**
-→ Use `langchain-core` instead:
-```bash
-pip install langchain-core
-```
-
-**Chroma DB deprecation warning about `db.persist()`**
-→ Safe to ignore — Chroma 0.4+ auto-persists. The warning doesn't affect functionality.
-
----
-
-## License
-
-MIT
