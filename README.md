@@ -324,16 +324,20 @@ python src/bug_reporter.py "Merchant can see Super Admin dashboard link in navig
 python src/bug_reporter.py "Login API returns 401 with valid credentials" --type backend
 ```
 
-### Upload options
+### Upload options with Regression Detection
 
 After generation you'll be prompted:
+Before uploading to GitHub or Jira, the system automatically checks for
+similar existing issues — preventing duplicate tickets.
+
+The check only runs for the destination you choose:
 
 ```
 Where would you like to upload this bug report?
-  [1] GitHub Issue only
-  [2] Jira Ticket only
-  [3] Both GitHub + Jira
-  [4] Skip — keep locally only
+  [1] GitHub Issue only → searches GitHub issues only
+  [2] Jira Ticket only → searches Jira issues only
+  [3] Both GitHub + Jira → searches both
+  [4] Skip — keep locally only → no check, saves with unique filename
 ```
 
 ---
