@@ -27,6 +27,7 @@ llm_model/
 *.log
 *.tmp
 logs/*.jsonl
+bug_reports/
 
 # Optional: lock files / pip cache
 pip-wheel-metadata/
