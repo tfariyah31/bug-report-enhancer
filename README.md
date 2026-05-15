@@ -1,14 +1,14 @@
 AI-powered bug reporting · RAG · RAGAS Evaluation · GitHub · Jira 
 
 # Bug Report Enhancer
-An AI-powered bug report automation tool that generates structured, context-aware bug reports from plain English descriptions and uploads them directly to GitHub Issues and Jira. Includes a full evaluation suite measuring RAG retrieval accuracy, LLM output quality (RAGAS), and template generation quality.
+An AI-powered bug report automation tool that generates structured, context-aware bug reports from plain language descriptions and uploads them directly to GitHub Issues and Jira. Includes a full evaluation suite measuring RAG retrieval accuracy, LLM output quality (RAGAS), and template generation quality.
 
 ---
 
 ## How It Works
 
 ```
-You type a plain English bug description
+You type a bug description
         ↓
 LangChain + Chroma retrieves relevant context
 from your feature files and API specs  (local)
