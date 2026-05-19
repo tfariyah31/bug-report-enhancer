@@ -332,7 +332,7 @@ python eval/run_ragas_eval.py
 |---|---|
 | Faithfulness | 0.308 |
 | Answer Relevancy | 0.739 |
-| context_precision | 0.557 |
+| Context Precision | 0.557 |
 | Overall | 0.535 |
 
 > **Note on Faithfulness (0.359):** RAGAS penalises any statement not
