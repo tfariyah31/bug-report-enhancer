@@ -217,22 +217,6 @@ Where would you like to upload this bug report?
 
 ---
 
-## GitHub Labels Created Automatically
-
-| Label | Color |
-|---|---|
-| `bug` | default |
-| `severity: critical` | dark red |
-| `severity: high` | red |
-| `severity: medium` | orange |
-| `severity: low` | yellow |
-| `priority: P0` | dark red |
-| `priority: P1` | red |
-| `priority: P2` | blue |
-| `priority: P3` | grey |
-
----
-
 ## When to Re-index
 
 Re-run `build_index.py` only when you add, update, or remove files in `data/`:
